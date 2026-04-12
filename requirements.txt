@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+python-dotenv
+ngrok
+httpx
+pytest
+pypdf
+python-docx
+openai
+sentence-transformers
+transformers
+OpenAI
+rank_bm25
