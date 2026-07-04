@@ -1,0 +1,33 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-edit.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/format-python.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && source env/bin/activate && pytest tests/ -v 2>&1",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

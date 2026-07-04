@@ -6,13 +6,22 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import re
 
+SUMMARIZE_PROMPT = """
+Read the following web page content and explain it naturally, like a person would.
 
-SUMMARIZE_PROMPT = (
-    "Summarize the following web page content concisely. "
-    "Focus on the key points and main ideas. "
-    "Keep the summary under 300 words. Use plain text suitable for Telegram.\n\n"
-)
+Write in a slightly informal, human tone — not robotic or overly structured.
+Avoid generic phrases and avoid sounding like a report.
 
+Focus on what actually matters:
+- What is this about?
+- What’s interesting or important?
+- Any useful examples or details
+
+Make it feel like you’re telling someone what you just read.
+
+Keep it under 300 words.
+Plain text only.
+"""
 
 def fetch_page_text(url, max_chars=10000):
     """Fetch a webpage and return cleaned visible text."""

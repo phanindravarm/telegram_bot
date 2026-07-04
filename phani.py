@@ -1,33 +1,21 @@
-import os
-from openai import OpenAI
-from dotenv import load_dotenv
+from fastapi import FastAPI, Request
 
-load_dotenv()
+app = FastAPI()
 
-client = OpenAI(
-    base_url="https://router.huggingface.co/v1",
-    api_key=os.getenv("HF_TOKEN"),
-)
+@app.get("/")
+def home():
+    return {"message": "Server is working"}
 
-completion = client.chat.completions.create(
-    model="meta-llama/Llama-4-Scout-17B-16E-Instruct:groq",
-    messages=[
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": "Describe this image in one sentence."
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": "https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg"
-                    }
-                }
-            ]
-        }
-    ],
-)
+@app.post("/webhook")
+async def webhook(request: Request):
+    data = await request.json()
+    print("Received:", data)
+    return {"status": "ok"}
 
-print(completion.choices[0].message)
+@app.get("/favicon.ico")
+def favicon():
+    return {}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=3000)
